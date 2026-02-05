@@ -3,20 +3,32 @@ package cityrescue;
 import cityrescue.exceptions.*;
 
 public class Station {
-    int stationID;
-    String name;
-    int capacity;
-    int unitCount;
-    int x;
-    int y;
+    private int stationId;
+    private String name;
+    private int capacity;
+    private int unitCount;
+    private int x;
+    private int y;
 
-    public Station(String name, int capacity, int x, int y, int stationID) {
+    public Station(String name, int capacity, int x, int y, int stationId) {
         this.name = name;
         this.capacity = capacity;
         this.x = x;
         this.y = y;
-        this.stationID = stationID;
+        this.stationId = stationId;
         this.unitCount = 0;
+    }
+
+    public int getStationId() {
+        return stationId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getUnitCount() {
+        return unitCount;
     }
 
     public void setCapacity(int capacity) throws InvalidCapacityException {

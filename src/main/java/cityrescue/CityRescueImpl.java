@@ -18,12 +18,8 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
-        if (width > 0 && height > 0) {
-            citymap = new CityMap(height, width);
-            tick = 0;
-        } else {
-            throw new InvalidGridException("Invalid grid dimensions.");
-        }
+        citymap = new CityMap(height, width);
+        tick = 0;
     }
 
     @Override
@@ -59,8 +55,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public int[] getStationIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        return citymap.getStationIds();
     }
 
     @Override

@@ -1,20 +1,27 @@
 package cityrescue;
 
+import java.util.ArrayList;
 import cityrescue.exceptions.*;
 
 public class CityMap {
     private int mapHeight;
     private int mapWidth;
     private boolean[][] blocked;
-    private Station[] stations;
-    private int stationCount;
+    private ArrayList<Station> stations;
+    private int currentStationId;
 
-    public CityMap(int mapHeight, int mapWidth) {
-        this.mapHeight = mapHeight;
-        this.mapWidth = mapWidth;
-        this.blocked = new boolean[mapHeight][mapWidth];
-        this.stations = new Station[CityRescue.MAX_STATIONS];
-        this.stationCount = 0;
+    public CityMap(int mapHeight, int mapWidth) throws InvalidGridException {
+        if (mapWidth > 0 && mapHeight > 0) {
+            this.mapHeight = mapHeight;
+            this.mapWidth = mapWidth;
+            this.blocked = new boolean[mapHeight][mapWidth];
+            this.stations = new ArrayList<Station>();
+
+            // Station IDs begin at 1
+            this.currentStationId = 1;
+        } else {
+            throw new InvalidGridException("Invalid grid dimensions.");
+        }
     }
 
     public int[] getGridSize() {
@@ -33,6 +40,18 @@ public class CityMap {
         }
     }
 
+    public Station getStationById(int stationId) throws IDNotRecognisedException {
+        for (int i = 0; i < stations.size(); i++) {
+            Station station = stations.get(i);
+
+            if (station.getStationId() == stationId) {
+                return station;
+            }
+        }
+
+        throw new IDNotRecognisedException("Station ID is not valid.");
+    }
+
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
         if (name.isBlank()) {
             throw new InvalidNameException("Station name is empty.");
@@ -41,29 +60,37 @@ public class CityMap {
         } else if (blocked[y][x] == true) {
             throw new InvalidLocationException("Coordinates are blocked.");
         } else {
-            Station newStation = new Station(name, CityRescue.DEFAULT_STATION_CAPACITY, x, y, stationCount);
-            stations[stationCount] = newStation;
-            stationCount++;
+            Station newStation = new Station(name, CityRescue.DEFAULT_STATION_CAPACITY, x, y, currentStationId);
+            stations.add(newStation);
+            currentStationId++;
 
-            return newStation.stationID;
+            return newStation.getStationId();
         }
     }
 
     void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
-        if (stations[stationId] == null) {
-            throw new IDNotRecognisedException("Station ID is not valid.");
-        } else if (stations[stationId].unitCount > 0) {
+        Station station = getStationById(stationId);
+
+        if (station.getUnitCount() > 0) {
             throw new IllegalStateException("Station contains units.");
         } else {
-            stations[stationId] = null;
+            stations.remove(station);
         }
     }
 
     void setStationCapacity(int stationId, int capacity) throws IDNotRecognisedException, InvalidCapacityException {
-        if (stations[stationId] == null) {
-            throw new IDNotRecognisedException("Station ID is not valid.");
-        } else {
-            stations[stationId].setCapacity(capacity);;
+        Station station = getStationById(stationId);
+
+        station.setCapacity(capacity);
+    }
+
+    int[] getStationIds() {
+        int[] stationIds = new int[stations.size()];
+
+        for (int i = 0; i < stationIds.length; i++) {
+            stationIds[i] = stations.get(i).getStationId();
         }
+
+        return stationIds;
     }
 }
