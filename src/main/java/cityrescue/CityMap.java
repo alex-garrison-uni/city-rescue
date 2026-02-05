@@ -93,4 +93,20 @@ public class CityMap {
 
         return stationIds;
     }
+
+    int getStationCount() {
+        return stations.size();
+    }
+
+    int getBlockedCount() {
+        int blockedCount = 0;
+
+        for (int i = 0; i < mapHeight; i++) {
+            for (int j = 0; j < mapWidth; j++) {
+                if (blocked[i][j]) {blockedCount++;}
+            }
+        }
+
+        return blockedCount;
+    }
 }
