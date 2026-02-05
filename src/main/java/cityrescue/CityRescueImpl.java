@@ -13,28 +13,32 @@ public class CityRescueImpl implements CityRescue {
 
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
 
+    CityMap citymap;
+    int tick;
+
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (width > 0 && height > 0) {
+            citymap = new CityMap(height, width);
+            tick = 0;
+        } else {
+            throw new InvalidGridException("Invalid grid dimensions.");
+        }
     }
 
     @Override
     public int[] getGridSize() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        return citymap.getGridSize();
     }
 
     @Override
     public void addObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        citymap.setBlocked(x, y, true);
     }
 
     @Override
     public void removeObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        citymap.setBlocked(x, y, false);
     }
 
     @Override
