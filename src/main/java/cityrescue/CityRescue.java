@@ -4,9 +4,11 @@ import cityrescue.enums.*;
 import cityrescue.exceptions.*;
 
 public interface CityRescue {
+    // Constants for defaults and constraints
     int MAX_STATIONS = 20;
     int MAX_UNITS = 50;
     int MAX_INCIDENTS = 20;
+    int DEFAULT_STATION_CAPACITY = 10;
 
     void initialise(int width, int height) throws InvalidGridException;
     int[] getGridSize();
